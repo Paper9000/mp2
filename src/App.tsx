@@ -291,7 +291,7 @@ function SearchBar() {
 
 function App() {
   return (
-    <BrowserRouter basename="/Paper9000">
+    <BrowserRouter basename="/mp2">
       <div className="App">
         <header className="App-header">
           <h2 className='title'>Asteroid Analysis</h2>
