@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 import axios from 'axios';
@@ -29,21 +29,21 @@ async function getGalleryObjs() {
   let response = await axios.get(`${BASE_URL}/neo/browse?size=100&api_key=${key}`);
   return response.data;
 }
-function GalleryOrSearch() {
-  const [view, setView] = useState('search');
+// function GalleryOrSearch() {
+//   const [view, setView] = useState('search');
 
-  return (
-    <div>
-      <button className = "buttons" onClick={() => setView("search")}>Search</button>
-      <button className = "buttons" onClick={() => setView("gallery")}>Gallery</button>
-      {view == "search" && <SearchBar />}
-      {view === 'gallery' && <GalleryView />} {/*we will make this later on*/}
-    </div>
-  )
-}
+//   return (
+//     <div>
+//       <button className = "buttons" onClick={() => setView("search")}>Search</button>
+//       <button className = "buttons" onClick={() => setView("gallery")}>Gallery</button>
+//       {view == "search" && <SearchBar />}
+//       {view === 'gallery' && <GalleryView />} {/*we will make this later on*/}
+//     </div>
+//   )
+// }
 function GalleryView() {
-  {/*I want to display 100 asteroids and have some small font underneath each of them for description, with a image of some asteroid. Then I
-    some categories I can filter by (like most dangerous, diamter, closest to appraoch and No filter*/}
+  /*I want to display 100 asteroids and have some small font underneath each of them for description, with a image of some asteroid. Then I
+    some categories I can filter by (like most dangerous, diamter, closest to appraoch and No filter*/
   const [filterChoice, filterer] = useState('');
   const [results, setResults] = useState<any>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -66,15 +66,15 @@ function GalleryView() {
   }, []);
   let filtered = (results && results.near_earth_objects.flat().filter((asteroid1: Asteroid) => {
           let asteroid = asteroid1 as Asteroid;
-          if (filterChoice == '') return true;
+          if (filterChoice === '') return true;
           
-          if (filterChoice == 'most dangerous') {
-            return asteroid.is_potentially_hazardous_asteroid == true;
+          if (filterChoice === 'most dangerous') {
+            return asteroid.is_potentially_hazardous_asteroid === true;
           }
-          if (filterChoice == "max diameter") {
+          if (filterChoice === "max diameter") {
             return asteroid.estimated_diameter.miles.estimated_diameter_max > 1;
           }
-          if (filterChoice == "min diameter") {
+          if (filterChoice === "min diameter") {
             return asteroid.estimated_diameter.miles.estimated_diameter_min < 2;
           }
 
@@ -138,10 +138,10 @@ function GalleryView() {
 }
 function getProperDate(date: string) {
   date = date.trim();
-  if (date.length == 4) { // like 2020
+  if (date.length === 4) { // like 2020
     return `${date}-01-01`;
   }
-  if (date.length == 7) { // like 2020-09
+  if (date.length === 7) { // like 2020-09
     return `${date}-01`;
   }
   return date; // means its already good
@@ -149,7 +149,7 @@ function getProperDate(date: string) {
 function getProperEnd(start: string, end: string) {
   start = start.trim();
   end = end.trim();
-  if ((end.length == 4 && end == start.substring(0, 4)) || (end == start.substring(0, 7) && end.length == 7)) { // make sure cases like 2021
+  if ((end.length === 4 && end === start.substring(0, 4)) || (end === start.substring(0, 7) && end.length === 7)) { // make sure cases like 2021
     let end_first = new Date(start);
     end_first.setDate(end_first.getDate() + 7);
     let end = end_first.toISOString().split('T')[0];
@@ -176,10 +176,10 @@ function SearchBar() {
           if (query.length >= 4) {
             if (query.includes(",")) {
               let dates = query.split(',');
-              if (dates.length == 2) {
+              if (dates.length === 2) {
                 let start = getProperDate(dates[0].trim());
                 let end = dates[1].trim();
-                if (end.length == 0) {
+                if (end.length === 0) {
                   let next_date =  new Date(start);
                   next_date.setDate(next_date.getDate() + 7);
                   end = next_date.toISOString().split('T')[0];
@@ -223,18 +223,18 @@ function SearchBar() {
   let res1 = (results && Object.values(results.near_earth_objects).flat().sort((a1, b1) => {
           const a = a1 as Asteroid;
           const b = b1 as Asteroid;
-          if (sortBy == "Close Approach Date") {
-            if (ordering == "ascending") {
+          if (sortBy === "Close Approach Date") {
+            if (ordering === "ascending") {
               return a.close_approach_data[0]?.close_approach_date.localeCompare(b.close_approach_data[0]?.close_approach_date);
 
-            } else if (ordering == "descending") {
+            } else if (ordering === "descending") {
                 return b.close_approach_data[0]?.close_approach_date.localeCompare(a.close_approach_data[0]?.close_approach_date);
             }
-          } else if (sortBy == "name") {
-            if (ordering == "ascending") {
+          } else if (sortBy === "name") {
+            if (ordering === "ascending") {
               return a.name.localeCompare(b.name);
 
-            } else if (ordering == "descending") {
+            } else if (ordering === "descending") {
                 return b.name.localeCompare(a.name);
             }
           }
