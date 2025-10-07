@@ -30,7 +30,6 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: 'mp2/package-lock.json'
 
       - name: Install dependencies
         run: npm ci
@@ -41,7 +40,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./mp2/build
+          path: ./build
   
   deploy:
     needs: build
